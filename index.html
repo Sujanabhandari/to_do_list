@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>To Do List</title>
-    <meta charset="UTF-8" /> 
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" 
-    rel="stylesheet" 
-    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" 
-    crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
-  </head>
+</head>
 
-  <body>
-      <div class="container m-5 p-2 rounded mx-auto bg-light shadow">
+<body>
+    <div class="container m-5 p-2 rounded mx-auto bg-light shadow">
         <!-- App title section -->
         <div class="row m-1 p-4">
             <div class="col">
@@ -23,37 +22,28 @@
             </div>
         </div>
 
-        <!-- Create todo section Ola part 
-          //add Input field and add button-->
-
-          <div id="task">
-            <input id="new" type="text">
-            <button class="add">ADD</button>
-          </div>
-
-          
-        
-        
-        <div class="p-2 mx-4 border-black-25 border-bottom">
-         
-        
-        <!-- Todo list section -->
-
-        <ul class="new-list">
-          
-        </ul>
-
-        <!--This div is a container for our To do items. We will use Unordered list. 
-          //once Item is added, It should comeinside this div.
-          //Cemil make a Items layout (with Radio button, Edit option and delete)
-        -->
-        <div>
+        <div class="row m-1 p-3">
+            <div class="col col-11 mx-auto">
+                <div
+                    class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center">
+                    <div class="col">
+                        <input class="form-control form-control-lg border-0 add-todo-input bg-transparent rounded"
+                            type="text" placeholder="Add new .." id="todoInput">
+                    </div>
+                    <div class="col-auto px-0 mx-0 mr-2">
+                        <button type="button" class="btn btn-primary" id="buttonAdd">Add</button>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="row mx-1 px-5 pb-3 w-80">
+            <div class="col mx-auto" id="todoSection">
+            </div>
+        </div>
+        <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+</body>
 
-      
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" 
-      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" 
-      crossorigin="anonymous"></script>
-      <script src="script.js"></script>
-  </body>
 </html>
