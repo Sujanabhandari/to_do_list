@@ -5,23 +5,56 @@ const myInput = document.querySelector('#new');
 
 const myArray = [];
 
+const editText = (event) => {
+    const dataTargetButtonClicked = event.target.getAttribute("data-target");
+    const divisionToEdit = document.getElementById(dataTargetButtonClicked);
+    divisionToEdit.contentEditable = true;
+    const index = dataTargetButtonClicked.substr(13);
+    divisionToEdit.addEventListener('keypress', (e) => {
+        e.preventDefault();
+        myArray[index] = divisionToEdit.textContent;
+        if (e.key === 'Enter') {
+            divisionToEdit.contentEditable = false;
+        }
+    })
+    let editElem = document.getElementById(dataTargetButtonClicked);
+    let userVersion = editElem.innerText;
+    localStorage.userEdits = userVersion;  
+}
+
 addTaskButton.addEventListener('click', () => {
-    let newItem = document.createElement('li');
-    newItem.innerText = `${myInput.value}`;
-    let newDivision = document.createElement('div');
+    let newListItem = document.createElement('li');
+    let newTextDivision = document.createElement('div');
+    newTextDivision.innerText = `${myInput.value}`; 
+    newTextDivision.id = `text-to-edit-${myArray.length}` ;
+    let newButtonDivision = document.createElement('div');
 
     let deleteButton = document.createElement('button');
     deleteButton.innerText = 'Delete';
+    deleteButton.id = `delete-${myArray.length}`;
+    // deleteButton.setAttribute("data-target", `text-to-edit-${myArray.length}`)
     let editButton = document.createElement('button');
     editButton.innerText = 'Edit';
+    editButton.id = 'edit';
+    editButton.id = `edit-${myArray.length}`;
+    editButton.setAttribute("data-target", `text-to-edit-${myArray.length}`)
+    editButton.addEventListener('click', editText);
 
-    newDivision.appendChild(deleteButton);
-    newDivision.appendChild(editButton);
+    newButtonDivision.appendChild(deleteButton);
+    newButtonDivision.appendChild(editButton);
 
-    newItem.appendChild(newDivision);
-    myArray.push(newItem);
-    myList.appendChild(newItem);
+    newListItem.appendChild(newTextDivision);
+    newListItem.appendChild(newButtonDivision);
+    myArray.push(newTextDivision.textContent);
+    // console.log(myArray);
+    myList.appendChild(newListItem);
 })
+
+
+
+
+
+
 
 
 
