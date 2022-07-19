@@ -6,8 +6,12 @@ const inputTodo = document.querySelector("#todoInput")
 const todoSection = document.querySelector("#todoSection")
 let delButtons = document.querySelector(".delete-item")
 let arrayVisual = document.querySelector(".arrayVisual")
-const toDoArray = [];
 
+/**
+ * Create todo html element from given parameters.
+ * @param {Object} todoTask 
+ * @param {Int} index
+ */
 const createTodo = (todoTask, index) => {
     const newElement = document.createElement("div");
     newElement.setAttribute("id", `todo-${index}`);   
@@ -34,9 +38,16 @@ const createTodo = (todoTask, index) => {
         </div>
         </div>`;
     
+    
     return newElement;
 
 }
+/** 
+* Brief description of the function here.
+* @summary If the description is long, write your summary here. Otherwise, feel free to remove this.
+* @param {ParamDataTypeHere} parameterNameHere - Brief description of the parameter here. Note: For other notations of data types, please refer to JSDocs: DataTypes command.
+* @return {ReturnValueDataTypeHere} Brief description of the returning value here.
+*/
 
 const renderTodo = (element) => {
     
@@ -57,12 +68,10 @@ const addItem = () => {
     // Create new element and render
     renderTodo(createTodo(todoTask, toDoArray.length - 1));
 
-    localStorage.setItem("items", JSON.stringify(toDoArray));
-    
-    // console.log(result[0].name)
-    // console.log(result[0])
-    // // JSON.parse(localStorage.getItem("items"))
-    // JSON.parse(localStorage.getItem("items"))
+    // localStorage.setItem("items", JSON.stringify(toDoArray));
+
+    localStorage.setItem("toDoItems", JSON.stringify(toDoArray));
+    // JSON.parse(localStorage.getItem("toDoItems"))
 
     delButtons = document.querySelector(".delete-item");
     delButtons.addEventListener("click", deleteItem)
@@ -77,6 +86,7 @@ const addItem = () => {
 
     console.log(toDoArray)
 
+
 }
 
  
@@ -86,6 +96,7 @@ const deleteItem = (event) => {
     console.log(index);
     toDoArray.splice(index, 1);
     document.querySelector(`#todo-${index}`).remove();
+    localStorage.setItem("toDoItems", JSON.stringify(toDoArray));
     // console.log(event.currentTarget.);
 }
 
@@ -94,6 +105,7 @@ const inputEnter = (event) => {
         event.preventDefault();
         button.click();
     }
+
 }
 
 const markDone = (event) => {
@@ -115,6 +127,7 @@ const markDone = (event) => {
         toDoArray[index].status = "New";
         console.log(toDoArray[index])
     }
+    localStorage.setItem("toDoItems", JSON.stringify(toDoArray));
  
 }
 
@@ -123,25 +136,26 @@ const editItemFunction = (event) => {
     console.log(event.currentTarget)
     const targetNode = event.currentTarget;
     const parentNode = targetNode.closest('.todo-item');
-    parentNode.querySelector(".edit-todo-input").readOnly = false;
+    const inputItem = parentNode.querySelector(".edit-todo-input")
+    inputItem.readOnly = false;
     //task: Focous on Input when edit is created.
-    parentNode.querySelector(".edit-todo-input").focus();
-
-    const editItems = document.querySelector(".edit-todo-input")
-    editItems.addEventListener("keypress",editedItems)
+    inputItem.focus();
+    inputItem.select();
+    inputItem.addEventListener("keypress", editedItems)
   
 }
 
 const editedItems = (event) => {
-    const editItems = document.querySelector(".edit-todo-input")
     const index = parseInt(event.currentTarget.getAttribute("data-id"));
-
     if(event.key === 'Enter'){
-        const editedValue = editItems.value;
-        toDoArray[index] = editedValue;
-        editItems.readOnly = true;
+        event.currentTarget.blur();
+        inputTodo.focus();
+        const editedValue = event.currentTarget.value;
+        toDoArray[index].name = editedValue;
+        event.currentTarget.readOnly = true;
         console.log("update array" + toDoArray) 
-    }  
+        localStorage.setItem("toDoItems", JSON.stringify(toDoArray));
+    }
 }
 
 
@@ -149,4 +163,23 @@ const editedItems = (event) => {
 todoInput.addEventListener("keypress", inputEnter);
 button.addEventListener("click", addItem);
 
-//Task : Update the status : Done
+//When application is initialized.
+//When DOM is ready cheack if there is local storage .
+//And parse the values from local storage.
+//Render the array
+const toDoArray = JSON.parse(localStorage.getItem("toDoItems")) || [];
+console.log(toDoArray);
+toDoArray.forEach((item, index) => {
+    renderTodo(createTodo(item, index));
+});
+
+delButtons = document.querySelectorAll(".delete-item");
+delButtons.forEach((e) => e.addEventListener("click", deleteItem))
+
+const checkButton = document.querySelectorAll(".checkButton")
+checkButton.forEach((e) => e.addEventListener("click", markDone))
+// doneButton = document.querySelector(".doneButton")
+
+//edit option
+const editButton = document.querySelectorAll(".editButton")
+editButton.forEach((e) => e.addEventListener("click", editItemFunction))
