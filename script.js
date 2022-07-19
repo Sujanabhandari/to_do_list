@@ -17,10 +17,6 @@ const createTodo = (todoTask, index) => {
     const newElement = document.createElement("div");
     newElement.setAttribute("id", `todo-${index}`);
     
-
-    // newElement.setAttribute("class", "todoLi");
-    // newElement.innerHTML =`${inputTodo.value}`;
-    
     newElement.innerHTML = `<div class="row px-3 align-items-center todo-item rounded">
         <div class="col-auto m-1 p-0 d-flex align-items-center">
             <h2 class="m-0 p-0">
@@ -29,16 +25,19 @@ const createTodo = (todoTask, index) => {
             </h2>
         </div>
         <div class="col px-1 m-1 d-flex align-items-center" id="addTodoS">
-            <input type="text" class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3" readonly value="${todoTask.name}"/>  
+            <input type="text" id="text-to-edit-${toDoArray.length}" class="form-control form-control-lg border-0 
+            edit-todo-input bg-transparent rounded px-3" value="${todoTask.name}"/>  
         </div>
         
         <div class="col-auto m-1 p-0 todo-actions">
             <div class="row d-flex align-items-center justify-content-end">
                 <h5 class="col m-0 p-0 px-2">
-                    <button><i class="bi bi-pencil text-info btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Edit todo"></i></button>
+                    <button class=""edit-item" data-target="text-to-edit-${toDoArray.length}"><i class="bi bi-pencil text-info btn m-0 p-0" data-toggle="tooltip" 
+                    data-placement="bottom" title="Edit todo"></i></button>
                 </h5>
                 <h5 class="col m-0 p-0 px-2">
-                    <button data-id="${index}" class="delete-item"><i class="bi bi-trash-fill text-danger btn m-0 p-0"  data-toggle="tooltip" data-placement="bottom" title="Delete todo"></i></button>
+                    <button data-id="${index}" class="delete-item"><i class="bi bi-trash-fill text-danger btn m-0 p-0"  
+                    data-toggle="tooltip" data-placement="bottom" title="Delete todo"></i></button>
                 </h5>
             </div>
         </div>
@@ -47,16 +46,13 @@ const createTodo = (todoTask, index) => {
     return newElement;
 }
 
-const renderTodo = (element) => {
-    
+const renderTodo = (element) => { 
     todoSection.prepend(element);
 }
 
 const addItem = () => {
-    // Extract the todo from input
     
     const userInput = inputTodo.value;
-    // Clear the input Reset()
     inputTodo.value = "";
     // Add to the memory 
     // Example [{status:"new", task:"clean apartment"},{status:"done", task:"cook food"}]
@@ -66,22 +62,17 @@ const addItem = () => {
     }
 
     toDoArray.push(todoTask);
-    // Use Index of the array while editing 
-    // Create new element and render
     renderTodo(createTodo(todoTask, toDoArray.length - 1));
 
-    // localStorage.setItem("items", JSON.stringify(toDoArray));
-    
-    // console.log(result[0].name)
-    // console.log(result[0])
-    // // JSON.parse(localStorage.getItem("items"))
-    // JSON.parse(localStorage.getItem("items"))
     delButtons = document.querySelector(".delete-item");
     delButtons.addEventListener("click", deleteItem)
 
     undoButton = document.querySelector(".undoButton")
     undoButton.addEventListener("click", markDone)
     doneButton = document.querySelector(".doneButton")
+
+    editButton = document.querySelector(".edit-item");
+    editButton.addEventListener("click", editText)
     
 }
 
@@ -114,3 +105,51 @@ const markDone = () => {
 
 todoInput.addEventListener("keypress", inputEnter)
 button.addEventListener("click", addItem)
+
+
+const editText = (event) => {
+    const dataTargetButtonClicked = event.target.getAttribute("data-target");
+    const divisionToEdit = document.getElementById(dataTargetButtonClicked);
+    divisionToEdit.contentEditable = true;
+    const index = dataTargetButtonClicked.substr(13);
+    divisionToEdit.addEventListener('keypress', (e) => {
+        e.preventDefault();
+        toDoArray[index] = divisionToEdit.textContent;
+        if (e.key === 'Enter') {
+            divisionToEdit.contentEditable = false;
+        }
+    })
+    let editElem = document.getElementById(dataTargetButtonClicked);
+    let userVersion = editElem.innerText;
+    localStorage.userEdits = userVersion;  
+}
+
+/*
+
+addTaskButton.addEventListener('click', () => {
+    let newListItem = document.createElement('li');
+    let newTextDivision = document.createElement('div');
+    newTextDivision.innerText = `${myInput.value}`; 
+    newTextDivision.id = `text-to-edit-${toDoArray.length}` ;
+    let newButtonDivision = document.createElement('div');
+
+    let deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete';
+    deleteButton.id = `delete-${toDoArray.length}`;
+    let editButton = document.createElement('button');
+    editButton.innerText = 'Edit';
+    editButton.id = 'edit';
+    editButton.id = `edit-${toDoArray.length}`;
+    editButton.setAttribute("data-target", `text-to-edit-${toDoArray.length}`)
+    editButton.addEventListener('click', editText);
+
+    newButtonDivision.appendChild(deleteButton);
+    newButtonDivision.appendChild(editButton);
+
+    newListItem.appendChild(newTextDivision);
+    newListItem.appendChild(newButtonDivision);
+    toDoArray.push(newTextDivision.textContent);
+    // console.log(toDoArray);
+    myList.appendChild(newListItem);
+})
+*/
