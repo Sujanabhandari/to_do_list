@@ -26,13 +26,13 @@ const createTodo = (todoTask, index) => {
         </div>
         <div class="col px-1 m-1 d-flex align-items-center" id="addTodoS">
             <input type="text" id="text-to-edit-${toDoArray.length}" class="form-control form-control-lg border-0 
-            edit-todo-input bg-transparent rounded px-3" value="${todoTask.name}"/>  
+            edit-todo-input bg-transparent rounded px-3" readonly value="${todoTask.name}"/>  
         </div>
         
         <div class="col-auto m-1 p-0 todo-actions">
             <div class="row d-flex align-items-center justify-content-end">
                 <h5 class="col m-0 p-0 px-2">
-                    <button class=""edit-item" data-target="text-to-edit-${toDoArray.length}"><i class="bi bi-pencil text-info btn m-0 p-0" data-toggle="tooltip" 
+                    <button class="edit-item" data-id="${index}"><i class="bi bi-pencil text-info btn m-0 p-0" data-toggle="tooltip" 
                     data-placement="bottom" title="Edit todo"></i></button>
                 </h5>
                 <h5 class="col m-0 p-0 px-2">
@@ -108,48 +108,22 @@ button.addEventListener("click", addItem)
 
 
 const editText = (event) => {
-    const dataTargetButtonClicked = event.target.getAttribute("data-target");
-    const divisionToEdit = document.getElementById(dataTargetButtonClicked);
-    divisionToEdit.contentEditable = true;
-    const index = dataTargetButtonClicked.substr(13);
-    divisionToEdit.addEventListener('keypress', (e) => {
-        e.preventDefault();
-        toDoArray[index] = divisionToEdit.textContent;
-        if (e.key === 'Enter') {
-            divisionToEdit.contentEditable = false;
-        }
-    })
-    let editElem = document.getElementById(dataTargetButtonClicked);
-    let userVersion = editElem.innerText;
-    localStorage.userEdits = userVersion;  
+
+    console.log(event.currentTarget)
+    const targetNode = event.currentTarget;
+    const parentNode = targetNode.closest('.todo-item');
+    parentNode.querySelector(".edit-todo-input").readOnly = false;
+
+    const editItems = document.querySelector(".edit-todo-input")
+    editItems.addEventListener("keypress",editedItems)
 }
-
-/*
-
-addTaskButton.addEventListener('click', () => {
-    let newListItem = document.createElement('li');
-    let newTextDivision = document.createElement('div');
-    newTextDivision.innerText = `${myInput.value}`; 
-    newTextDivision.id = `text-to-edit-${toDoArray.length}` ;
-    let newButtonDivision = document.createElement('div');
-
-    let deleteButton = document.createElement('button');
-    deleteButton.innerText = 'Delete';
-    deleteButton.id = `delete-${toDoArray.length}`;
-    let editButton = document.createElement('button');
-    editButton.innerText = 'Edit';
-    editButton.id = 'edit';
-    editButton.id = `edit-${toDoArray.length}`;
-    editButton.setAttribute("data-target", `text-to-edit-${toDoArray.length}`)
-    editButton.addEventListener('click', editText);
-
-    newButtonDivision.appendChild(deleteButton);
-    newButtonDivision.appendChild(editButton);
-
-    newListItem.appendChild(newTextDivision);
-    newListItem.appendChild(newButtonDivision);
-    toDoArray.push(newTextDivision.textContent);
-    // console.log(toDoArray);
-    myList.appendChild(newListItem);
-})
-*/
+const editedItems = (event) => {
+    const editItems = document.querySelector(".edit-todo-input")
+    const index = parseInt(event.currentTarget.getAttribute("data-id"));
+    if (event.key === 'Enter') {
+        const editedValue = editItems.value;
+        toDoArray[index] = editedValue;
+        editItems.readOnly = true;
+        console.log("updateArray" + toDoArray)
+       }
+}
