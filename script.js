@@ -12,6 +12,7 @@ let arrayVisual = document.querySelector(".arrayVisual")
  * @param {Object} todoTask 
  * @param {Int} index
  */
+
 const createTodo = (todoTask, index) => {
     const newElement = document.createElement("div");
     newElement.setAttribute("id", `todo-${index}`);   

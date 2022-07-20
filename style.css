@@ -9,3 +9,6 @@
 .textStrike{
     text-decoration:line-through;
 }
+u {
+    text-decoration: none;
+}
